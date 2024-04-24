@@ -1,6 +1,15 @@
-# 8(1): Define the function y' = te^(3t))-2y
+# 8(1)
+import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+# Define the function y' = te^(3t) - 2y
 def F1(t, y):
-    return  t*(np.exp(3*t))-2*y
+    return t * np.exp(3*t) - 2*y
+
+# Define the exact solution for comparison
+def exact1(t):
+    return (np.exp(-2*t) + np.exp(3*t)*(5*t - 1))/25 # evaluated from WolframAlpha
 
 # Initial condition
 t0 = 0
@@ -17,12 +26,13 @@ t_values = sol.t
 y_values = sol.y[0]
 
 # Plotting the result
-plt.figure(figsize=(5, 4))
-plt.plot(t_values, y_values)
+plt.figure(figsize=(8, 6))
+plt.plot(t_values, y_values, label='Numerical Solution')
+plt.plot(t_values, exact1(t_values), label='Exact Solution', linestyle='--')
 plt.xlabel('t')
 plt.ylabel('y')
 plt.grid(True)
-plt.title("Solution to y' = te^(3t))-2y, y(0) = 0")
+plt.title("Solution to y' = te^(3t) - 2y, y(0) = 0")
 plt.legend()
 
 plt.show()
