@@ -11,6 +11,10 @@ def fun(x, y):
 def bc(ya, yb):
     return [ya[0], yb[0] - np.log(2)]
 
+# Define the exact solution for comparison
+def exact1(x):
+    return np.log(x)
+
 # Interval for x
 x = np.linspace(1, 2, 100)
 
@@ -26,7 +30,8 @@ y_plot = sol.sol(x_plot)[0]
 
 # Plotting
 plt.figure(figsize=(5, 4))
-plt.plot(x_plot, y_plot, label='Numerical solution')
+plt.plot(x_plot, y_plot, label='Numerical Solution')
+plt.plot(x_plot, exact1(x_plot), label='Exact Solution', linestyle='--')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.title('Solution of y" = -e^{-2y}')
