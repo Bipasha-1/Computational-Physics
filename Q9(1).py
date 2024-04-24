@@ -25,7 +25,7 @@ x_plot = np.linspace(1, 2, 100)
 y_plot = sol.sol(x_plot)[0]
 
 # Plotting
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(5, 4))
 plt.plot(x_plot, y_plot, label='Numerical solution')
 plt.xlabel('x')
 plt.ylabel('y')
