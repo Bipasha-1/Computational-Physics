@@ -26,7 +26,7 @@ t_values = sol.t
 y_values = sol.y[0]
 
 # Plotting the result
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(5, 4))
 plt.plot(t_values, y_values, label='Numerical Solution')
 plt.plot(t_values, exact1(t_values), label='Exact Solution', linestyle='--')
 plt.xlabel('t')
