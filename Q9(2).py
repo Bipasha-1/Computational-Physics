@@ -22,7 +22,7 @@ x_plot = np.linspace(0, np.pi/2, 100)
 y_plot = sol.sol(x_plot)[0]  # Extracting y values from the solution
 
 # Plotting the result
-plt.figure(figsize=(8, 5))
+plt.figure(figsize=(5, 4))
 plt.plot(x_plot, y_plot, label='Numerical Solution')
 plt.xlabel('x')
 plt.ylabel('y')
