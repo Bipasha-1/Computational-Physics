@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <math.h>
+
+double exact_solution(double t) {
+    return pow((t + 1), 2) - 0.5 * exp(t);
+}
+
+double euler_method(double t, double y, double h) {
+    return y + h * (y - pow(t, 2) + 1);
+}
+
+int main() {
+    double t, y, h, error, error_bound;
+    int steps;
+    
+    // Initial values
+    t = 0;
+    y = 0.5;
+    h = 0.2;
+    
+    // Number of steps
+    steps = 2 / h;  // Number of steps to reach t=2
+    
+    printf("Step\tt\t\tEuler's y\tExact y\t\tError\t\tError Bound\n");
+    
+    for (int i = 0; i <= steps; i++) {
+        error_bound = 0.2 * (exp(2 * t) - 1);
+        error = fabs(exact_solution(t) - y);
+        
+        printf("%d\t%f\t%f\t%f\t%f\t%f\n", i, t, y, exact_solution(t), error, error_bound);
+        
+        // Update values for next step
+        y = euler_method(t, y, h);
+        t += h;
+    }
+    
+    return 0;
+}
