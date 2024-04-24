@@ -2,6 +2,10 @@
 def F2(t, y):
     return 1 - (t - y)**2
 
+# Define the exact solution for comparison
+def exact1(t):
+    return (1-3*t+t**2)/(t-3) # evaluated from WolframAlpha
+
 # Initial condition
 t0 = 2
 y0 = 1
@@ -19,7 +23,8 @@ y_values = sol.y[0]
 # Plotting the result
 plt.figure(figsize=(5, 4))
 plt.grid(True)
-plt.plot(t_values, y_values)
+plt.plot(t_values, y_values, label='Numerical Solution')
+plt.plot(t_values, exact1(t_values), label='Exact Solution', linestyle='--')
 plt.xlabel('t')
 plt.ylabel('y')
 plt.title("Solution to y' = 1 - (t - y)^2, y(2) = 1")
