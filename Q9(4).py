@@ -20,7 +20,7 @@ y_plot = sol.sol(x_plot)[0]  # Extracting y values from the solution
 
 # Plotting the result
 plt.figure(figsize=(5, 4))
-plt.plot(x_plot, y_plot, label='Approximation')
+plt.plot(x_plot, y_plot, label='Numerical Solution')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.title("Solution to y'' = 1/2 - (y')^2/2 - y*sin(x)/2, y(0) = 2, y(pi) = 2")
