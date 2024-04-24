@@ -1,4 +1,4 @@
-# 8(3): Define the function y' = 1 - (t - y)^2
+# 8(3)
 def F3(t, y):
     return  1 + y/t
 
