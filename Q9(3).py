@@ -11,6 +11,10 @@ def fun(x, y):
 def bc(ya, yb):
     return [ya[0] - 2**(-1/4), yb[0] - 0.5*(12)**0.25]
 
+# Define the exact solution for comparison
+def exact1(x):
+    return (np.sin(x))**0.5
+
 # Interval for x
 x = np.linspace(np.pi/4, np.pi/3, 100)
 
@@ -27,7 +31,8 @@ y_plot = sol.sol(x_plot)[0]
 
 # Plotting
 plt.figure(figsize=(5, 4))
-plt.plot(x_plot, y_plot, label='Numerical solution')
+plt.plot(x_plot, y_plot, label='Numerical Solution')
+plt.plot(x_plot, exact1(x_plot), label='Exact Solution', linestyle='--')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.title('Solution of y" = -(2(y\')^3 + y^2 y\') sec(x)')
