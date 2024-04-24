@@ -9,6 +9,7 @@ xf = 0
 ti = 0
 tf = 10
 N = 100
+g=10
 x = np.zeros(N+1)
 x[0],x[-1] = xi,xf
 h = (tf-ti)/N
@@ -25,8 +26,12 @@ while(a>tol):
     for i in range(1,len(x)-1):
         x[i] = (x[i-1]+x[i+1]+10*h**2)/2
     a = np.linalg.norm(x-y) #considering L2 norm
+    
+def exact_solution(t):
+    """Exact solution of the differential equation."""
+    return -0.5 * g * t**2 + 0.5*tf*g*t
 
-
+plt.plot(t, exact_solution(t), 'r^',label='Exact Solution')
 plt.grid(True)
 plt.plot(t,x,label = 'Final solution')
 plt.xlabel('t')
