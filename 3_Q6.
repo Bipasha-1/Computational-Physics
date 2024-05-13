@@ -7,7 +7,7 @@ def constant_function(x):
     return np.ones_like(x)  # Returns an array of ones with the same shape as x
 
 # Define the range of x-values
-x_values = np.linspace(-10, 10, 1000)  # Adjust the range and number of points as needed
+x_values = np.linspace(-10, 10, 1024)  # Adjust the range and number of points as needed
 
 # Compute the Fourier transform of the constant function
 fourier_transform = np.fft.fft(constant_function(x_values))
