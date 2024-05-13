@@ -1,0 +1,34 @@
+#6.
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the constant function
+def constant_function(x):
+    return np.ones_like(x)  # Returns an array of ones with the same shape as x
+
+# Define the range of x-values
+x_values = np.linspace(-10, 10, 1000)  # Adjust the range and number of points as needed
+
+# Compute the Fourier transform of the constant function
+fourier_transform = np.fft.fft(constant_function(x_values))
+
+# Compute the frequency axis for plotting
+freq = np.fft.fftfreq(len(x_values), x_values[1] - x_values[0])
+
+# Plot the original function and its Fourier transform
+plt.figure(figsize=(10, 6))
+
+plt.subplot(2, 1, 1)
+plt.plot(x_values, constant_function(x_values), color='blue')
+plt.title('Constant Function')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+
+plt.subplot(2, 1, 2)
+plt.plot(freq, np.abs(fourier_transform), color='red')
+plt.title('Fourier Transform')
+plt.xlabel('Frequency')
+plt.ylabel('|F(k)|')
+
+plt.tight_layout()
+plt.show()
