@@ -1,0 +1,22 @@
+#6.
+import numpy as np
+import matplotlib.pyplot as plt
+def f(x):
+    return np.sqrt(2/np.pi)*np.exp(-(x**2)/2)
+def g(x):
+    return np.where(x <= 10, 1, 0)
+x=np.linspace(0,10,100)
+plt.plot(x,f(x), 'r-', lw=2, label='Target distribution $f(x)$')
+x=np.random.rand(100)*10
+y=np.random.rand(100)
+f_x=f(x)
+y_bad = y[y > f_x]
+x_bad = x[y > f_x]
+y_good = y[y < f_x]
+x_good = x[y < f_x]
+plt.hist(x_good, range=(0, 10),  density=True,  alpha=0.6, color='g', label='Sampled distribution')
+plt.xlabel('x')
+plt.ylabel('Density')
+plt.title('Rejection Sampling')
+plt.legend()
+plt.show()
