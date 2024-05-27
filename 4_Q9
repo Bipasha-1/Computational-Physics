@@ -1,0 +1,63 @@
+#9.
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the density function
+def density(x):
+    if 3 <= x <= 7:
+        return 1/(7-3)
+    else:
+        return 0
+
+# Metropolis algorithm
+def metropolis(num_samples, initial_value, proposal_stddev):
+    samples = [initial_value]
+    current_value = initial_value
+    for _ in range(num_samples):
+        # Propose a new value by adding Gaussian noise to the current value
+        proposed_value = current_value + np.random.normal(scale=proposal_stddev)
+        
+        # Calculate acceptance probability
+        alpha = min(1, density(proposed_value) / density(current_value))
+        
+        # Accept or reject the proposed value
+        if np.random.rand() <= alpha:
+            current_value = proposed_value
+            samples.append(current_value)
+        else:
+            samples.append(current_value)
+    
+    return samples
+
+# Number of samples and initial value
+num_samples = 10000
+initial_value = 5
+proposal_stddev = 1.0
+
+# Generate samples using Metropolis algorithm
+samples = metropolis(num_samples, initial_value, proposal_stddev)
+
+# Plot Markov chain
+plt.figure(figsize=(10, 6))
+plt.plot(samples)
+plt.title('Markov Chain')
+plt.xlabel('Iteration')
+plt.ylabel('Value')
+plt.grid(True)
+plt.show()
+
+# Plot histogram of samples
+plt.figure(figsize=(10, 6))
+plt.hist(samples, bins=50, density=True, alpha=0.5, color='blue')
+plt.title('Density Histogram')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.grid(True)
+
+# Plot true density function
+x = np.linspace(2, 8, 100)
+y = [density(xi) for xi in x]
+plt.plot(x, y, color='red', linestyle='--', label='True Density')
+
+plt.legend()
+plt.show()
