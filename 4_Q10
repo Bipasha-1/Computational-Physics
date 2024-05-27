@@ -1,0 +1,91 @@
+#10.
+import numpy as np
+import matplotlib.pyplot as plt
+import emcee
+import corner
+
+# Load the data from the local file
+with open('scholar.enw.txt', 'r') as file:
+    data = np.genfromtxt(file, skip_header=1)
+x, y = data[:, 0], data[:, 1]
+
+# Define the model: y = ax^2 + bx + c
+def model(params, x):
+    a, b, c = params
+    return a * x**2 + b * x + c
+
+# Define the log likelihood function
+def log_likelihood(params, x, y):
+    a, b, c = params
+    model_y = model(params, x)
+    sigma2 = 1.0  # Assume a fixed noise level for simplicity
+    return -0.5 * np.sum((y - model_y) ** 2 / sigma2 + np.log(2 * np.pi * sigma2))
+
+# Define the log prior function
+def log_prior(params):
+    a, b, c = params
+    if -10.0 < a < 10.0 and -10.0 < b < 10.0 and -10.0 < c < 10.0:
+        return 0.0
+    return -np.inf
+
+# Define the log posterior function
+def log_posterior(params, x, y):
+    lp = log_prior(params)
+    if not np.isfinite(lp):
+        return -np.inf
+    return lp + log_likelihood(params, x, y)
+
+# Set up the MCMC sampler
+ndim = 3  # Number of parameters (a, b, c)
+nwalkers = 50  # Number of Markov chains
+nsteps = 4000  # Number of steps
+
+# Initialize the walkers in a small Gaussian ball around the initial guess
+initial_guess = [1.0, 1.0, 1.0]
+pos = initial_guess + 1e-4 * np.random.randn(nwalkers, ndim)
+
+# Set up the sampler
+sampler = emcee.EnsembleSampler(nwalkers, ndim, log_posterior, args=(x, y))
+
+# Run MCMC
+sampler.run_mcmc(pos, nsteps, progress=True)
+
+# Get the samples and compute the best-fit parameters and uncertainties
+samples = sampler.get_chain(discard=1000, thin=15, flat=True)
+a_median, b_median, c_median = np.median(samples, axis=0)
+a_std, b_std, c_std = np.std(samples, axis=0)
+
+print(f"Best-fit values:")
+print(f"a = {a_median:.3f} ± {a_std:.3f}")
+print(f"b = {b_median:.3f} ± {b_std:.3f}")
+print(f"c = {c_median:.3f} ± {c_std:.3f}")
+
+# Plot all chains
+plt.figure(figsize=(10, 7))
+for i in range(ndim):
+    plt.subplot(ndim, 1, i+1)
+    plt.plot(sampler.get_chain()[:, :, i].T, '-', color='k', alpha=0.3)
+    plt.ylabel(['a', 'b', 'c'][i])
+plt.xlabel('Step')
+plt.show()
+
+# Plot the corner plot of the samples
+fig = corner.corner(samples, labels=["a", "b", "c"], truths=[a_median, b_median, c_median])
+plt.show()
+
+# Plot the data with the best-fit model and 200 models randomly chosen from the posterior
+plt.figure(figsize=(10, 7))
+plt.scatter(x, y, label='Data', color='black')
+
+x_fit = np.linspace(min(x), max(x), 500)
+y_fit_median = model([a_median, b_median, c_median], x_fit)
+plt.plot(x_fit, y_fit_median, color='red', label='Best-fit model')
+
+for a, b, c in samples[np.random.randint(len(samples), size=200)]:
+    y_fit = model([a, b, c], x_fit)
+    plt.plot(x_fit, y_fit, color='blue', alpha=0.1)
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.show()
