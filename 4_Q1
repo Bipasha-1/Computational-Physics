@@ -1,0 +1,42 @@
+#1.
+import numpy as np
+import matplotlib.pyplot as plt
+import time
+
+# Parameters for the LCG
+a = 1664525
+c = 1013904223
+m = 2**32
+seed = 42
+
+def lcg(a, c, m, seed, size):
+    numbers = np.zeros(size)
+    x = seed
+    for i in range(size):
+        x = (a * x + c) % m
+        numbers[i] = x/m 
+    return numbers
+
+# Number of random samples to generate
+num_samples = 10000
+
+# Measure the time to generate random numbers
+start_time = time.time()
+random_numbers = lcg(a, c, m, seed, num_samples)
+lcg_time = time.time() - start_time
+
+# Plot the density histogram
+plt.figure(figsize=(10, 6))
+plt.hist(random_numbers, bins=35, density=True, alpha=0.6, color='g', label='LCG Random Numbers')
+
+# Plot the uniform PDF
+x = np.linspace(0, 1, 100)
+plt.plot(x, np.ones_like(x), 'r-', lw=2, label='Uniform PDF')
+
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.title('Density Histogram of LCG Random Numbers vs. Uniform PDF')
+plt.legend()
+plt.show()
+
+print(f"LCG generation time: {lcg_time:.6f} seconds")
