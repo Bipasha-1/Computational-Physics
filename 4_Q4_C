@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+double exponential_random(double mean) {
+    double u = (double)rand() / RAND_MAX; // Generate a random number between 0 and 1
+    return -mean * log(1 - u); // Transformation method for exponential distribution
+}
+
+int main() {
+    const int n = 10000; // Number of random numbers to generate
+    const double mean = 0.5; // Mean of the exponential distribution
+
+    // Seed the random number generator
+    srand(time(NULL));
+
+    // Generate and print the random numbers
+    printf("Random numbers following exponential distribution with mean %.2f:\n", mean);
+    for (int i = 0; i < n; ++i) {
+        double random_number = exponential_random(mean);
+        printf("%.6f\n", random_number);
+    }
+
+    return 0;
+}
