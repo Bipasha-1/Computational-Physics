@@ -1,0 +1,35 @@
+#5.
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Function to generate standard normal random numbers using Box-Muller method
+def box_muller(n):
+    u1 = np.random.uniform(0, 1, n)
+    u2 = np.random.uniform(0, 1, n)
+    z1 = np.sqrt(-2 * np.log(u1)) * np.cos(2 * np.pi * u2)
+    z2 = np.sqrt(-2 * np.log(u1)) * np.sin(2 * np.pi * u2)
+    return np.concatenate((z1, z2))
+
+# Generate 10,000 random numbers
+n = 10000  # We generate 5000 pairs to get 10000 numbers
+random_numbers = box_muller(n)
+
+# Plot the density histogram of the generated numbers
+plt.figure(figsize=(10, 6))
+count, bins, ignored = plt.hist(random_numbers, bins=30, density=True, alpha=0.6, color='g', label='Histogram')
+
+# Plot the Gaussian PDF
+xmin, xmax = plt.xlim()
+x = np.linspace(xmin, xmax, 100)
+p = norm.pdf(x, 0, 1)
+plt.plot(x, p, 'k', linewidth=2, label='Gaussian PDF')
+
+# Add labels and legend
+plt.title('Density Histogram and Gaussian PDF')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.legend()
+
+# Show the plot
+plt.show()
